@@ -20,6 +20,11 @@ Events.generateKeyObject = function( pressed) {
 
         return toReturn;
     };
+    keyObject.isPressedDown = function() {
+        var update = this.readOutUpdate();
+
+        return update.pressed && update.updated;
+    };
 
     keyObject.pressed = pressed;
     keyObject.updated = false;

@@ -8,25 +8,11 @@ var fpsCounter = new Stats();
 fpsCounter.showPanel(0);
 document.body.appendChild( fpsCounter.dom );
 
-
-var mouseCube = Entity.createCube(0xCC0000,new THREE.Vector3(0.3,0.3,0.3),new THREE.Vector3(0,0.5,0),new THREE.Vector3(0,0,0));//var mouseCube =
-scene.add(mouseCube);
-
-var moveMouseCube = function() {
-	var posLookMouse = MouseSelect.positionWhereMouseLooksOnYAxisFromCenterPoint(0.5, Camera.camera, Events.mouse.position);
-
-	if (posLookMouse != null) {
-		Utils.setXYZ(mouseCube.position, posLookMouse);
-	}
-};
-
 var render = function() {
 	fpsCounter.begin();
 	var deltaTime = TimeClock.getDelta();
 
-	moveMouseCube();
-
-	if (Player.player != undefined) {
+	/*if (Player.player != undefined) {
 		Player.executeKeys(Player.player, deltaTime);
 		Living.animateLiving(Player.player, TimeClock.elapsedTime);
 		Player.lookTowardsPosition(Player.player, mouseCube.position);
@@ -43,7 +29,16 @@ var render = function() {
 		cameraPosition.add(direction);
 
 		Camera.moveCamera(Camera.camera, cameraPosition, deltaTime, Camera.speed);
-	}
+	}*/
+
+	if (Events.keys.ArrowLeft.isPressedDown()) {
+        Camera.previousCamera();
+    }
+    if (Events.keys.ArrowRight.isPressedDown()) {
+        Camera.nextCamera();
+    }
+
+	Camera.moveCamera(Camera.camera, Camera.cameras[Camera.cameraId], deltaTime);
 
 	renderer.render( scene, Camera.camera );
 	fpsCounter.end();
@@ -55,7 +50,7 @@ $.getJSON("map.json", function(data) {
 
 	Camera.speed = data.cameraSpeed;
 	Camera.setCameraPositionAndRotation(Camera.camera, data.cameras[0]);
-	Camera.cameraInitialInfo = data.cameras[0];
+	Camera.cameras = data.cameras;
 
 	data.lights.forEach(function(light) {
 		scene.add(Light.generateLight(light));

@@ -24,7 +24,7 @@ Light.createPointLight = function( color, strength, distance, position) {
 Light.generateLight = function(light) {
 
 	if (light.type === "DirectionalLight") {
-		return Light.createDirectionalLight(Light.WHITE, light.strength, new THREE.Vector3( light.position.x, light.position.y, light.position.z));
+		return Light.createDirectionalLight(Utils.stringHexToHex( light.color ), light.strength, new THREE.Vector3( light.position.x, light.position.y, light.position.z));
 	} else if (light.type === "HemisphereLight") {
 		return Light.createHemisphereLight(Utils.stringHexToHex( light.sky ), Utils.stringHexToHex( light.ground ), light.strength);
 	} else if (light.type === "PointLight") {

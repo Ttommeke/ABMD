@@ -56,16 +56,14 @@ $.getJSON("map.json", function(data) {
 		scene.add(Light.generateLight(light));
 	});
 
+	Text.initText( data.text, data.textList);
+
 	var emap = Map.generateMapFromNumberMap(data.map, data.objectList);
 	Map.loadMapInScene(emap, scene);
 
 	Map.map = emap;
 
 	renderer.setClearColor( Utils.stringHexToHex( data.clearcolor ), 1 );
-
-	var player = Living.generateLiving(data.player);
-	scene.add(player);
-	Player.player = player;
 
 	TimeClock.getDelta();
 	render();
